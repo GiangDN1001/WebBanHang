@@ -14,10 +14,13 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        DB::table('users')->insert([
-            'name' => 'Giang',
-            'email' => 'danggianghxpt2003@gmail.com',
-            'password' => bcrypt('123456')
+        $this->call([
+            MonthSeeder::class
         ]);
+        // DB::table('users')->insert([
+        //     'name' => 'Giang',
+        //     'email' => 'danggianghxpt2003@gmail.com',
+        //     'password' => bcrypt('123456')
+        // ]);
     }
 }

@@ -70,8 +70,8 @@ body {
 
 .table-striped th:nth-child(2),
 .table-striped td:nth-child(2) {
-    width: 250px;
-    padding-bottom: 18px;
+    /* width: 250px;
+    padding-bottom: 18px; */
 }
 
 .pname {
@@ -149,7 +149,7 @@ body {
 .table-striped th:nth-child(2),
 .table-striped td:nth-child(2) {
     width: 250px;
-    padding-bottom: 18px;
+    /* padding-bottom: 18px; */
 }
 
 .pname {

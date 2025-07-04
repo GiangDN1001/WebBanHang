@@ -44,7 +44,9 @@
                         name="slug" tabindex="0" value="{{ old('slug') }}" aria-required="true" required>
                     <div class="text-tiny">Do not exceed 100 characters when entering the product name.</div>
                 </fieldset>
-                @error('slug') <span class=" alert alert-danger text-center">{{ $message }}</span> @enderror
+                @error('slug')
+                    <span class=" alert alert-danger text-center">{{ $message }}</span>
+                @enderror
 
                 <div class="gap22 cols">
                     <fieldset class="category">
@@ -79,23 +81,20 @@
                 </div>
 
                 <fieldset class="shortdescription">
-                    <div class="body-title mb-10">Short Description <span
-                            class="tf-color-1">*</span></div>
-                    <textarea class="mb-10 ht-150" name="short_description"
-                        placeholder="Short Description" tabindex="0" aria-required="true"
-                        required="">{{ old('short_description') }}</textarea>
-                    <div class="text-tiny">Do not exceed 100 characters when entering the
-                        product name.</div>
+                    <div class="body-title mb-10">Short Description 
+                        <span class="tf-color-1">*</span>
+                    </div>
+                    <textarea id="short_description" class="mb-10 ht-150" name="short_description"
+                        placeholder="Short Description">{{ old('short_description') }}</textarea>
+                    <div class="text-tiny"></div>
                 </fieldset>
                 @error('short_description') <span class=" alert alert-danger text-center">{{ $message }}</span> @enderror
 
                 <fieldset class="description">
                     <div class="body-title mb-10">Description <span class="tf-color-1">*</span>
                     </div>
-                    <textarea class="mb-10" name="description" placeholder="Description"
-                        tabindex="0" aria-required="true" required="">{{ old('description') }}</textarea>
-                    <div class="text-tiny">Do not exceed 100 characters when entering the
-                        product name.</div>
+                    <textarea id="description" class="mb-10" name="description" placeholder="Description">{{ old('description') }}</textarea>
+                    <div class="text-tiny"></div>
                 </fieldset>
                 @error('description') <span class=" alert alert-danger text-center">{{ $message }}</span> @enderror
 
@@ -125,10 +124,7 @@
 
                 <fieldset>
                     <div class="body-title mb-10">Upload Gallery Images</div>
-                    <div class="upload-image mb-16">
-                        <!-- <div class="item">
-        <img src="images/upload/upload-1.png" alt="">
-    </div>                                                 -->
+                    <div class="upload-image mb-16">                                              
                         <div id="galUpload" class="item up-load">
                             <label class="uploadfile" for="gFile">
                                 <span class="icon">
@@ -257,5 +253,58 @@
             .replace(/[^a-z0-9]+/g, "_")
             .replace(/^-+|-+$/g, "");
         }
+    </script>
+
+    <script src="{{ asset('js/tinymce/js/tinymce/tinymce.min.js') }}"></script>
+    <script>
+        tinymce.init({
+            selector: '#short_description',
+            height: 500,
+            plugins: [
+                'advlist autolink lists link image charmap preview anchor',
+                'searchreplace visualblocks code fullscreen',
+                'insertdatetime media table code help wordcount',
+                'textcolor colorpicker',
+                'fontfamily fontsize'
+            ],
+            toolbar: 'undo redo | formatselect fontselect fontsizeselect | bold italic underline strikethrough | forecolor backcolor | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image media | table | code preview fullscreen',
+            menubar: 'file edit view insert format tools table help',
+            font_formats: 'Arial=arial,helvetica,sans-serif; Courier New=courier new,courier; Times New Roman=times new roman,times;',
+            fontsize_formats: '8pt 10pt 12pt 14pt 18pt 24pt 36pt 48pt',
+            content_style: "body { font-family: Arial; font-size:14px }",
+
+            setup: function (editor) {
+                editor.on('change', function () {
+                    document.querySelector('#short_description').value = editor.getContent();
+                });
+            }
+        });
+
+        tinymce.init({
+            selector: '#description',
+            height: 500,
+            plugins: [
+                'advlist autolink lists link image charmap preview anchor',
+                'searchreplace visualblocks code fullscreen',
+                'insertdatetime media table code help wordcount',
+                'textcolor colorpicker',
+                'fontfamily fontsize'
+            ],
+            toolbar: 'undo redo | formatselect fontselect fontsizeselect | bold italic underline strikethrough | forecolor backcolor | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image media | table | code preview fullscreen',
+            menubar: 'file edit view insert format tools table help',
+            font_formats: 'Arial=arial,helvetica,sans-serif; Courier New=courier new,courier; Times New Roman=times new roman,times;',
+            fontsize_formats: '8pt 10pt 12pt 14pt 18pt 24pt 36pt 48pt',
+            content_style: "body { font-family: Arial; font-size:14px }",
+            setup: function (editor) {
+                editor.on('change', function () {
+                    document.querySelector('#description').value = editor.getContent();
+                });
+            }
+        });
+
+        document.querySelector('form').addEventListener('submit', function (e) {
+            document.querySelector('#short_description').value = tinymce.get('short_description').getContent();
+            document.querySelector('#description').value = tinymce.get('description').getContent();
+        });
     </script>
 @endpush

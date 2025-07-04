@@ -18,7 +18,7 @@ return new class extends Migration
             $table->string('mobile')->unique();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
-            $table->string('utype')->default('user')->comment('ADM for admin and USR for User or Customer');
+            $table->string('utype')->default('USR')->comment('ADM for Admin and USR for User or Customer');
             $table->rememberToken();
             $table->timestamps();
         });
@@ -48,4 +48,6 @@ return new class extends Migration
         Schema::dropIfExists('password_reset_tokens');
         Schema::dropIfExists('sessions');
     }
+
+
 };

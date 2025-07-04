@@ -1,5 +1,10 @@
 @extends('layouts.app')
 @section('content')
+<style>
+  .filled-heart {
+    color: orange;
+  }
+</style>
 <main class="pt-90">
     <div class="mb-md-1 pb-md-3"></div>
     <section class="product-single container">
@@ -55,24 +60,26 @@
         <div class="col-lg-5">
           <div class="d-flex justify-content-between mb-4 pb-md-2">
             <div class="breadcrumb mb-0 d-none d-md-block flex-grow-1">
-              <a href="#" class="menu-link menu-link_us-s text-uppercase fw-medium">Home</a>
+              <a style="font-family: 'Roboto'" href="{{ route('home.index') }}" class="menu-link menu-link_us-s text-uppercase fw-medium">Trang chủ</a>
               <span class="breadcrumb-separator menu-link fw-medium ps-1 pe-1">/</span>
-              <a href="#" class="menu-link menu-link_us-s text-uppercase fw-medium">The Shop</a>
+              <a style="font-family: 'Roboto'" href="{{ route('shop.index') }}" class="menu-link menu-link_us-s text-uppercase fw-medium">Cửa hàng</a>
+              <span class="breadcrumb-separator menu-link fw-medium ps-1 pe-1">/</span>
+              <a style="font-family: 'Roboto'" href="#" class="menu-link menu-link_us-s text-uppercase fw-medium">Chi tiết sản phẩm</a>
             </div><!-- /.breadcrumb -->
 
-            <div
+            {{-- <div
               class="product-single__prev-next d-flex align-items-center justify-content-between justify-content-md-end flex-grow-1">
               <a href="#" class="text-uppercase fw-medium"><svg width="10" height="10" viewBox="0 0 25 25"
                   xmlns="http://www.w3.org/2000/svg">
                   <use href="#icon_prev_md" />
-                </svg><span class="menu-link menu-link_us-s">Prev</span></a>
-              <a href="#" class="text-uppercase fw-medium"><span class="menu-link menu-link_us-s">Next</span><svg
+                </svg><span class="menu-link menu-link_us-s">Quay lại </span></a>
+              <a href="#" class="text-uppercase fw-medium"><span class="menu-link menu-link_us-s">Tiếp tục</span><svg
                   width="10" height="10" viewBox="0 0 25 25" xmlns="http://www.w3.org/2000/svg">
                   <use href="#icon_next_md" />
                 </svg></a>
-            </div><!-- /.shop-acs -->
+            </div><!-- /.shop-acs --> --}}
           </div>
-          <h1 class="product-single__name">{{ $product->name }}</h1>
+          <h1 style="font-family: 'Roboto'" class="product-single__name">{{ $product->name }}</h1>
           <div class="product-single__rating">
             <div class="reviews-group d-flex">
               <svg class="review-star" viewBox="0 0 9 9" xmlns="http://www.w3.org/2000/svg">
@@ -96,18 +103,17 @@
           <div class="product-single__price">
             <span class="current-price">
               @if($product->sale_price) 
-                <s>${{ $product->regular_price }}</s> ${{ $product->sale_price }}
-              @else ${{ $product->regular_price }}
+                <s>{{ number_format($product->regular_price, 0, ',', '.') }}₫</s> <span style="color: red">{{ number_format($product->sale_price, 0, ',', '.') }}₫</span>
+              @else {{ number_format($product->regular_price, 0, ',', '.') }}₫
               @endif
             </span>
           </div>
           
           <div class="product-single__short-desc">
-            <p>{{ $product->description }}</p>
+            {!! $product->short_description !!}
           </div>
-
           @if(Cart::instance('cart')->content()->where('id',$product->id)->count()>0)
-            <a href="{{route('cart.index')}}" class="btn btn-warning mb-3">Go to Cart</a>
+            <a style="font-family: 'Roboto'"  href="{{route('cart.index')}}" class="btn btn-warning mb-3">Tới giỏ hàng</a>
           @else
           <form name="addtocart-form" method="POST" action="{{route('cart.add')}}">
               @csrf
@@ -120,22 +126,45 @@
                   <input type="hidden" name="id" value="{{$product->id}}" />
                   <input type="hidden" name="name" value="{{$product->name}}" />
                   <input type="hidden" name="price" value="{{$product->sale_price == '' ? $product->regular_price:$product->sale_price}}" />                        
-                  <button type="submit" class="btn btn-primary">Add to Cart</button>
+                  <button style="font-family: 'Roboto'"  type="submit" class="btn btn-primary">Thêm vào giỏ hàng</button>
               </div>
           </form>
           @endif
         
           <div class="product-single__addtolinks">
-            <a href="#" class="menu-link menu-link_us-s add-to-wishlist"><svg width="16" height="16" viewBox="0 0 20 20"
-                fill="none" xmlns="http://www.w3.org/2000/svg">
-                <use href="#icon_heart" />
-              </svg><span>Add to Wishlist</span></a>
+            @if(Cart::instance("wishlist")->content()->where('id',$product->id)->count()>0)
+              <form method="POST" action="{{ route('wishlist.remove', ['rowId' => Cart::instance('wishlist')->content()->where('id', $product->id)->first()->rowId]) }}">
+                @csrf
+                @method('DELETE')
+                <a href="javascript:void(0)" class="menu-link menu-link_us-s add-to-wishlist filled-heart"
+                  onclick="this.closest('form').submit()">
+                  <svg width="16" height="16" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <use href="#icon_heart" />
+                  </svg>
+                  <span>Xóa khỏi danh sách mong muốn</span>
+                </a>
+              </form>
+            @else
+              <form method="POST" action="{{route('wishlist.add')}}" id="wishlist-form-{{ $product->id }}">
+                @csrf
+                <input type="hidden" name="id" value="{{$product->id}}" />
+                <input type="hidden" name="name" value="{{$product->name}}" />
+                <input type="hidden" name="quantity" value="1"/>
+                <input type="hidden" name="price" value="{{$product->sale_price == '' ? $product->regular_price:$product->sale_price}}" />
+                <a href="javascript:void(0)" class="menu-link menu-link_us-s add-to-wishlist" onclick="document.getElementById('wishlist-form-{{ $product->id }}').submit()">
+                  <svg width="16" height="16" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <use href="#icon_heart" />  
+                  </svg>
+                  <span>Thêm vào danh sách mong muốn</span>
+                </a>
+              </form>
+            @endif
             <share-button class="share-button">
               <button class="menu-link menu-link_us-s to-share border-0 bg-transparent d-flex align-items-center">
                 <svg width="16" height="19" viewBox="0 0 16 19" fill="none" xmlns="http://www.w3.org/2000/svg">
                   <use href="#icon_sharing" />
                 </svg>
-                <span>Share</span>
+                <span>Chia sẻ</span>
               </button>
               <details id="Details-share-template__main" class="m-1 xl:m-1.5" hidden="">
                 <summary class="btn-solid m-1 xl:m-1.5 pt-3.5 pb-3 px-5">+</summary>
@@ -182,47 +211,30 @@
         <ul class="nav nav-tabs" id="myTab" role="tablist">
           <li class="nav-item" role="presentation">
             <a class="nav-link nav-link_underscore active" id="tab-description-tab" data-bs-toggle="tab"
-              href="#tab-description" role="tab" aria-controls="tab-description" aria-selected="true">Description</a>
+              href="#tab-description" role="tab" aria-controls="tab-description" aria-selected="true">Mô tả</a>
           </li>
           <li class="nav-item" role="presentation">
             <a class="nav-link nav-link_underscore" id="tab-additional-info-tab" data-bs-toggle="tab"
               href="#tab-additional-info" role="tab" aria-controls="tab-additional-info"
-              aria-selected="false">Additional Information</a>
+              aria-selected="false">Thông tin bổ sung</a>
           </li>
           <li class="nav-item" role="presentation">
             <a class="nav-link nav-link_underscore" id="tab-reviews-tab" data-bs-toggle="tab" href="#tab-reviews"
-              role="tab" aria-controls="tab-reviews" aria-selected="false">Reviews (2)</a>
+              role="tab" aria-controls="tab-reviews" aria-selected="false">Đánh giá</a>
           </li>
         </ul>
         <div class="tab-content">
           <div class="tab-pane fade show active" id="tab-description" role="tabpanel"
             aria-labelledby="tab-description-tab">
             <div class="product-single__description">
-              {{ $product->description }}
+              {!! $product->description !!}
             </div>
           </div>
           <div class="tab-pane fade" id="tab-additional-info" role="tabpanel" aria-labelledby="tab-additional-info-tab">
             <div class="product-single__addtional-info">
-              <div class="item">
-                <label class="h6">Weight</label>
-                <span>1.25 kg</span>
-              </div>
-              <div class="item">
-                <label class="h6">Dimensions</label>
-                <span>90 x 60 x 90 cm</span>
-              </div>
-              <div class="item">
-                <label class="h6">Size</label>
-                <span>XS, S, M, L, XL</span>
-              </div>
-              <div class="item">
-                <label class="h6">Color</label>
-                <span>Black, Orange, White</span>
-              </div>
-              <div class="item">
-                <label class="h6">Storage</label>
-                <span>Relaxed fit shirt-style dress with a rugged</span>
-              </div>
+                <div class="item">
+                  {!! $product->short_description  !!}
+                </div>
             </div>
           </div>
           <div class="tab-pane fade" id="tab-reviews" role="tabpanel" aria-labelledby="tab-reviews-tab">
@@ -260,40 +272,8 @@
                   </div>
                 </div>
               </div>
-              <div class="product-single__reviews-item">
-                <div class="customer-avatar">
-                  <img loading="lazy" src="assets/images/avatar.jpg" alt="" />
-                </div>
-                <div class="customer-review">
-                  <div class="customer-name">
-                    <h6>Benjam Porter</h6>
-                    <div class="reviews-group d-flex">
-                      <svg class="review-star" viewBox="0 0 9 9" xmlns="http://www.w3.org/2000/svg">
-                        <use href="#icon_star" />
-                      </svg>
-                      <svg class="review-star" viewBox="0 0 9 9" xmlns="http://www.w3.org/2000/svg">
-                        <use href="#icon_star" />
-                      </svg>
-                      <svg class="review-star" viewBox="0 0 9 9" xmlns="http://www.w3.org/2000/svg">
-                        <use href="#icon_star" />
-                      </svg>
-                      <svg class="review-star" viewBox="0 0 9 9" xmlns="http://www.w3.org/2000/svg">
-                        <use href="#icon_star" />
-                      </svg>
-                      <svg class="review-star" viewBox="0 0 9 9" xmlns="http://www.w3.org/2000/svg">
-                        <use href="#icon_star" />
-                      </svg>
-                    </div>
-                  </div>
-                  <div class="review-date">April 06, 2023</div>
-                  <div class="review-text">
-                    <p>Nam libero tempore, cum soluta nobis est eligendi optio cumque nihil impedit quo minus id quod
-                      maxime placeat facere possimus, omnis voluptas assumenda est…</p>
-                  </div>
-                </div>
-              </div>
             </div>
-            <div class="product-single__review-form">
+            {{-- <div class="product-single__review-form">
               <form name="customer-review-form">
                 <h5>Be the first to review “Message Cotton T-Shirt”</h5>
                 <p>Your email address will not be published. Required fields are marked *</p>
@@ -350,13 +330,13 @@
                   <button type="submit" class="btn btn-primary">Submit</button>
                 </div>
               </form>
-            </div>
+            </div> --}}
           </div>
         </div>
       </div>
     </section>
     <section class="products-carousel container">
-      <h2 class="h3 text-uppercase mb-4 pb-xl-2 mb-xl-4">Related <strong>Products</strong></h2>
+      <h2 style="font-family: 'Roboto'"  class="h3 text-uppercase mb-4 pb-xl-2 mb-xl-4">Sản phẩm liên quan</h2>
 
       <div id="related_products" class="position-relative">
         <div class="swiper-container js-swiper-slider" data-settings='{
@@ -395,38 +375,80 @@
           <div class="swiper-wrapper">
             @foreach($rproducts as $rproduct)
               <div class="swiper-slide product-card">
-                <div class="pc__img-wrapper">
+                <div class="pc__img-wrapper position-relative">
                   <a href="{{ route('shop.product.details', ['product_slug' => $rproduct->slug]) }}">
                     <img loading="lazy" src="{{ asset('uploads/products') }}/{{ $rproduct->image }}" width="330" height="400"
                       alt="{{ $rproduct->name }}" class="pc__img">
-                      @foreach(explode(",", $rproduct->images) as $gimg)
-                        <img loading="lazy" src="{{ asset('uploads/products') }}/{{ $gimg }}" width="330" height="400"
+                    @php
+                      $galleryImages = explode(",", $rproduct->images);
+                    @endphp
+                    @if(isset($galleryImages[0]) && $galleryImages[0] != '')
+                      <img loading="lazy" src="{{ asset('uploads/products') }}/{{ $galleryImages[0] }}" width="330" height="400"
                         alt="{{ $rproduct->name }}" class="pc__img pc__img-second">
-                      @endforeach
+                    @endif
                   </a>
-                  <button
-                    class="pc__atc btn anim_appear-bottom btn position-absolute border-0 text-uppercase fw-medium js-add-cart js-open-aside"
-                    data-aside="cartDrawer" title="Add To Cart">Add To Cart</button>
+
+                  {{-- Giỏ hàng --}}
+                  @if(Cart::instance('cart')->content()->where('id', $rproduct->id)->count() > 0)
+                    <a href="{{ route('cart.index') }}" class="pc__atc btn anim_appear-bottom btn position-absolute border-0 text-uppercase fw-medium btn-warning mb-3">Đến giỏ hàng</a>
+                  @else
+                    <form method="POST" action="{{ route('cart.add') }}">
+                      @csrf
+                      <input type="hidden" name="id" value="{{ $rproduct->id }}" />
+                      <input type="hidden" name="quantity" value="1" />
+                      <input type="hidden" name="name" value="{{ $rproduct->name }}" />
+                      <input type="hidden" name="price" value="{{ $rproduct->sale_price == '' ? $rproduct->regular_price : $rproduct->sale_price }}" />
+                      <button type="submit" class="pc__atc btn anim_appear-bottom btn position-absolute border-0 text-uppercase fw-medium" data-aside="cartDrawer" title="Add To Cart">Thêm vào giỏ hàng</button>
+                    </form>
+                  @endif
                 </div>
 
                 <div class="pc__info position-relative">
-                  <p class="pc__category">{{ $rproduct->category->name }}</p>
-                  <h6 class="pc__title"><a href="{{ route('shop.product.details', ['product_slug' => $rproduct->slug]) }}">{{ $rproduct->name }}</a></h6>
+                  <p style="font-family: 'Roboto'" class="pc__category">{{ $rproduct->category->name }}</p>
+                  <h6 style="font-family: 'Roboto'" class="pc__title">
+                    <a href="{{ route('shop.product.details', ['product_slug' => $rproduct->slug]) }}">{{ $rproduct->name }}</a>
+                  </h6>
+
                   <div class="product-card__price d-flex">
                     <span class="money price">
-                      @if($rproduct->sale_price) 
-                        <s>${{ $rproduct->regular_price }}</s> ${{ $rproduct->sale_price }}
-                        @else ${{ $rproduct->regular_price }}
+                      @if($rproduct->sale_price)
+                        <s>{{ number_format($rproduct->regular_price, 0, '.', '.') }}₫</s>
+                        <span style="color: red">{{ number_format($rproduct->sale_price, 0, '.', '.') }}₫</span>
+                      @else
+                        {{ number_format($rproduct->regular_price, 0, '.', '.') }}₫
                       @endif
                     </span>
                   </div>
 
-                  <button class="pc__btn-wl position-absolute top-0 end-0 bg-transparent border-0 js-add-wishlist"
-                    title="Add To Wishlist">
-                    <svg width="16" height="16" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-                      <use href="#icon_heart" />
-                    </svg>
-                  </button>
+                  {{-- Wishlist --}}
+                  @php
+                    $wishlistItem = Cart::instance("wishlist")->content()->where('id', $rproduct->id)->first();
+                  @endphp
+
+                  @if($wishlistItem)
+                    <form method="POST" action="{{ route('wishlist.remove', ['rowId' => $wishlistItem->rowId]) }}">
+                      @csrf
+                      @method('DELETE')
+                      <button type="submit" class="pc__btn-wl position-absolute top-0 end-0 bg-transparent border-0 filled-heart" title="Remove from Wishlist">
+                        <svg width="16" height="16" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                          <use href="#icon_heart" />
+                        </svg>
+                      </button>
+                    </form>
+                  @else
+                    <form method="POST" action="{{ route('wishlist.add') }}">
+                      @csrf
+                      <input type="hidden" name="id" value="{{ $rproduct->id }}" />
+                      <input type="hidden" name="name" value="{{ $rproduct->name }}" />
+                      <input type="hidden" name="quantity" value="1" />
+                      <input type="hidden" name="price" value="{{ $rproduct->sale_price == '' ? $rproduct->regular_price : $rproduct->sale_price }}" />
+                      <button type="submit" class="pc__btn-wl position-absolute top-0 end-0 bg-transparent border-0" title="Add To Wishlist">
+                        <svg width="16" height="16" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                          <use href="#icon_heart" />
+                        </svg>
+                      </button>
+                    </form>
+                  @endif
                 </div>
               </div>
             @endforeach

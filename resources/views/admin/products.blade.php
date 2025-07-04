@@ -59,7 +59,7 @@
                         @foreach ($products as $product)
                             <tr>
                                 <td>{{ $product->id }}</td>
-                                <td class="pname">
+                                <td style="padding-bottom: 19px;" class="pname">
                                     <div class="image">
                                         <img src="{{ asset('uploads/products/thumbnails') }}/{{ $product->image }}" alt="{{ $product->name }}" class="image">
                                         
@@ -69,8 +69,8 @@
                                         <div class="text-tiny mt-3">{{ $product->slug }}</div>
                                     </div>
                                 </td>
-                                <td>${{ $product->regular_price }}</td>
-                                <td>${{ $product->sale_price }}</td>
+                                <td>{{ number_format($product->regular_price,0,'.','.') }} ₫</td>
+                                <td>{{ number_format($product->sale_price,0,'.','.') }} ₫</td>
                                 <td>{{ $product->SKU }}</td>
                                 <td>{{ $product->category->name }}</td>
                                 <td>{{ $product->brand->name }}</td>
@@ -79,7 +79,7 @@
                                 <td>{{ $product->quantity }}</td>
                                 <td>
                                     <div class="list-icon-function">
-                                        <a href="#" target="_blank">
+                                        <a href="{{ route('shop.product.details', $product->slug) }}" target="_blank">
                                             <div class="item eye">
                                                 <i class="icon-eye"></i>
                                             </div>

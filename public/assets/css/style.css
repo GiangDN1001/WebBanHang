@@ -2792,7 +2792,8 @@ progress {
   height: 100% !important; }
 
 .h-auto {
-  height: auto !important; }
+  /* height: auto !important; */
+} 
 
 .mh-100 {
   max-height: 100% !important; }
@@ -8241,13 +8242,13 @@ img {
   height: 6.25rem; }
 
 .gradient-bg {
-  background-image: url(../../images/home/demo3/slider_bg.html);
+  /* background-image: url(../../images/home/demo3/slider_bg.html); */
   background-position: top center;
   background-repeat: no-repeat;
   background-size: 100% auto; }
 
 .gradient-bg-10 {
-  background-image: url(../../images/home/demo10/slider_bg.html);
+  /* background-image: url(../../images/home/demo10/slider_bg.html); */
   background-position: top center;
   background-repeat: no-repeat;
   background-size: auto 84rem; }

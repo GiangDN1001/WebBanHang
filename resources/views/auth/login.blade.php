@@ -41,6 +41,10 @@
                                 <span class="text-secondary">No account yet?</span>
                                 <a href="{{ route('register') }}" class="btn-text js-show-register">Create Account</a>
                             </div>
+
+                            <div class="customer-option mt-4 text-center">
+                                <a href="{{ route('password.request') }}" class="btn-text js-show-register">Forgot password</a>
+                            </div>
                         </form>
                     </div>
                 </div>

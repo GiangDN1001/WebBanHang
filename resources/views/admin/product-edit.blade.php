@@ -83,7 +83,7 @@
                 <fieldset class="shortdescription">
                     <div class="body-title mb-10">Short Description <span
                             class="tf-color-1">*</span></div>
-                    <textarea class="mb-10 ht-150" name="short_description"
+                    <textarea class="mb-10 ht-150" name="short_description" id="short_description"
                         placeholder="Short Description" tabindex="0" aria-required="true"
                         required="">{{ $product->short_description }}</textarea>
                     <div class="text-tiny">Do not exceed 100 characters when entering the
@@ -94,7 +94,7 @@
                 <fieldset class="description">
                     <div class="body-title mb-10">Description <span class="tf-color-1">*</span>
                     </div>
-                    <textarea class="mb-10" name="description" placeholder="Description"
+                    <textarea class="mb-10" name="description" placeholder="Description" id="description"
                         tabindex="0" aria-required="true" required="">{{ $product->description }}</textarea>
                     <div class="text-tiny">Do not exceed 100 characters when entering the
                         product name.</div>
@@ -110,8 +110,8 @@
                         @if($product->image)
                             <div class="item" id="imgpreview">
                                 <img src="{{ asset('uploads/products/' . $product->image) }}" class="effect8" alt="${{ $product->image }}">
-                                    class="effect8" alt="">
                             </div>
+                            <input type="hidden" name="old_image" value="{{ $product->image }}">
                         @endif
                         <div id="upload-file" class="item up-load">
                             <label class="uploadfile" for="myFile">
@@ -136,6 +136,7 @@
                                 <img src="{{ asset('uploads/products/') }}/{{ trim($img) }}" alt="">
                             </div>   
                         @endforeach
+                        <input type="hidden" name="old_images" value="{{ $product->images }}">
                     @endif                                            
                         <div id="galUpload" class="item up-load">
                             <label class="uploadfile" for="gFile">
@@ -265,5 +266,57 @@
             .replace(/[^a-z0-9]+/g, "-")
             .replace(/^-+|-+$/g, "");
         }
+    </script>
+
+    <script src="{{ asset('js/tinymce/js/tinymce/tinymce.min.js') }}"></script>
+    <script>
+        tinymce.init({
+            selector: '#short_description',
+            height: 500,
+            plugins: [
+                'advlist autolink lists link image charmap preview anchor',
+                'searchreplace visualblocks code fullscreen',
+                'insertdatetime media table code help wordcount',
+                'textcolor colorpicker',
+                'fontfamily fontsize'
+            ],
+            toolbar: 'undo redo | formatselect fontselect fontsizeselect | bold italic underline strikethrough | forecolor backcolor | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image media | table | code preview fullscreen',
+            menubar: 'file edit view insert format tools table help',
+            font_formats: 'Arial=arial,helvetica,sans-serif; Courier New=courier new,courier; Times New Roman=times new roman,times;',
+            fontsize_formats: '8pt 10pt 12pt 14pt 18pt 24pt 36pt 48pt',
+            content_style: "body { font-family: Arial; font-size:14px }",
+            setup: function (editor) {
+                editor.on('change', function () {
+                    document.querySelector('#short_description').value = editor.getContent();
+                });
+            }
+        });
+
+        tinymce.init({
+            selector: '#description',
+            height: 500,
+            plugins: [
+                'advlist autolink lists link image charmap preview anchor',
+                'searchreplace visualblocks code fullscreen',
+                'insertdatetime media table code help wordcount',
+                'textcolor colorpicker',
+                'fontfamily fontsize'
+            ],
+            toolbar: 'undo redo | formatselect fontselect fontsizeselect | bold italic underline strikethrough | forecolor backcolor | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image media | table | code preview fullscreen',
+            menubar: 'file edit view insert format tools table help',
+            font_formats: 'Arial=arial,helvetica,sans-serif; Courier New=courier new,courier; Times New Roman=times new roman,times;',
+            fontsize_formats: '8pt 10pt 12pt 14pt 18pt 24pt 36pt 48pt',
+            content_style: "body { font-family: Arial; font-size:14px }",
+            setup: function (editor) {
+                editor.on('change', function () {
+                    document.querySelector('#description').value = editor.getContent();
+                });
+            }
+        });
+
+        document.querySelector('form').addEventListener('submit', function (e) {
+            document.querySelector('#short_description').value = tinymce.get('short_description').getContent();
+            document.querySelector('#description').value = tinymce.get('description').getContent();
+        });
     </script>
 @endpush

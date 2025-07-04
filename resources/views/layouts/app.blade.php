@@ -7,15 +7,16 @@
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>{{ config('app.name', 'Laravel') }}</title>
+    <title>@yield('title', 'Trang chủ')</title>
     <meta http-equiv="content-type" content="text/html; charset=utf-8" />
     <meta name="author" content="surfside media" />
-    <link rel="shortcut icon" href="{{ asset('assets/images/favicon.ico') }}" type="image/x-icon">
+    <link rel="shortcut icon" href="{{ asset('images/favicon.ico') }}" type="image/x-icon">
     <link rel="preconnect" href="https://fonts.gstatic.com/">
     <link
       href="https://fonts.googleapis.com/css2?family=Jost:ital,wght@0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&amp;display=swap"
       rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Allura&amp;display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="{{ asset('assets/css/plugins/swiper.min.css') }}" type="text/css" />
     <link rel="stylesheet" href="{{ asset('assets/css/style.css') }}" type="text/css" />
     <link rel="stylesheet" href="{{ asset('assets/css/custom.css') }}" type="text/css" />
@@ -25,6 +26,35 @@
     @stack("styles")
 </head>
 <body class="gradient-bg">
+
+<style>
+  html, body {
+    font-family: 'Roboto', sans-serif;
+  }
+    #zalo-button {
+      position: fixed;
+      bottom: 60px;
+      right: 1px;
+      z-index: 9999;
+      display: inline-block;
+      border-radius: 10%;
+      padding: 8px;
+      background-color: white;
+      box-shadow: 0 0 8px rgba(0,0,0,0.2);
+      transition: transform 0.3s ease;
+    }
+
+    #zalo-button:hover {
+      transform: scale(1.1);
+    }
+
+    #zalo-button img {
+      width: 48px;
+      height: auto;
+      display: block;
+      border-radius: 50%;
+    }
+</style>
     <svg class="d-none">
       <symbol id="icon_nav" viewBox="0 0 25 18">
         <rect width="25" height="2" />
@@ -257,6 +287,36 @@
       .logo__image {
         max-width: 220px;
       }
+
+      .product-item {
+        display: flex;
+        align-items: center;
+        justify-content: flex-start;
+        gap: 15px;
+        transition: all 0.3s ease;
+        padding-right: 5px;
+      }
+
+      .product-item .image {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 50px;
+        height: 50px;
+        gap: 10px;
+        flex-shrink: 0;
+        padding: 5px;
+        background: #EFF4F8;
+        border-radius: 10px;
+      }
+
+      #box-content-search li {
+        list-style: none;
+      }
+
+      #box-content-search.product-item {
+        margin-bottom: 10px;
+      }
     </style>
     <div class="header-mobile header_sticky">
       <div class="container d-flex align-items-center h-100">
@@ -307,7 +367,7 @@
           <div class="overflow-hidden">
             <ul class="navigation__list list-unstyled position-relative">
               <li class="navigation__item">
-                <a href="{{ route('home.index') }}" class="navigation__link">Home</a>
+                <a href="{{ route('home.index') }}" class="navigation__link">Trang chủ</a>
               </li>
               <li class="navigation__item">
                 <a href="{{ route('shop.index') }}" class="navigation__link">Shop</a>
@@ -316,11 +376,15 @@
                 <a href="{{ route('cart.index') }}" class="navigation__link">Cart</a>
               </li>
               <li class="navigation__item">
-                <a href="about.html" class="navigation__link">About</a>
+                <a href="{{ route('home.about') }}" class="navigation__link">About</a>
               </li>
               <li class="navigation__item">
-                <a href="contact.html" class="navigation__link">Contact</a>
+                <a href="{{ route('home.contact') }}" class="navigation__link">Contact</a>
               </li>
+              <li class="navigation__item">
+                <a href="contact.html" class="navigation__link">Blog</a>
+              </li>
+              
             </ul>
           </div>
         </div>
@@ -396,19 +460,19 @@
           <nav class="navigation">
             <ul class="navigation__list list-unstyled d-flex">
               <li class="navigation__item">
-                <a href="{{ route('home.index') }}" class="navigation__link">Home</a>
+                <a href="{{ route('home.index') }}" class="navigation__link">Trang chủ</a>
               </li>
               <li class="navigation__item">
-                <a href="{{ route('shop.index') }}" class="navigation__link">Shop</a>
+                <a href="{{ route('shop.index') }}" class="navigation__link">Cửa hàng</a>
               </li>
               <li class="navigation__item">
-                <a href="{{ route('cart.index') }}" class="navigation__link">Cart</a>
+                <a href="{{ route('cart.index') }}" class="navigation__link">Giỏ hàng</a>
               </li>
               <li class="navigation__item">
-                <a href="about.html" class="navigation__link">About</a>
+                <a href="{{ route('home.about') }}" class="navigation__link">Giới thiệu</a>
               </li>
               <li class="navigation__item">
-                <a href="contact.html" class="navigation__link">Contact</a>
+                <a href="{{ route('home.contact') }}" class="navigation__link">Liên hệ</a>
               </li>
             </ul>
           </nav>
@@ -429,7 +493,7 @@
                 <form action="#" method="GET" class="search-field container">
                   <p class="text-uppercase text-secondary fw-medium mb-4">What are you looking for?</p>
                   <div class="position-relative">
-                    <input class="search-field__input search-popup__input w-100 fw-medium" type="text"
+                    <input class="search-field__input search-popup__input w-100 fw-medium" id= "search-input" type="text"
                       name="search-keyword" placeholder="Search products" />
                     <button class="btn-icon search-popup__submit" type="submit">
                       <svg class="d-block" width="20" height="20" viewBox="0 0 20 20" fill="none"
@@ -441,20 +505,9 @@
                   </div>
   
                   <div class="search-popup__results">
-                    <div class="sub-menu search-suggestion">
-                      <h6 class="sub-menu__title fs-base">Quicklinks</h6>
-                      <ul class="sub-menu__list list-unstyled">
-                        <li class="sub-menu__item"><a href="shop2.html" class="menu-link menu-link_us-s">New Arrivals</a>
-                        </li>
-                        <li class="sub-menu__item"><a href="#" class="menu-link menu-link_us-s">Dresses</a></li>
-                        <li class="sub-menu__item"><a href="shop3.html" class="menu-link menu-link_us-s">Accessories</a>
-                        </li>
-                        <li class="sub-menu__item"><a href="#" class="menu-link menu-link_us-s">Footwear</a></li>
-                        <li class="sub-menu__item"><a href="#" class="menu-link menu-link_us-s">Sweatshirt</a></li>
+                      <ul id = "box-content-search">
+
                       </ul>
-                    </div>
-  
-                    <div class="search-result row row-cols-5"></div>
                   </div>
                 </form>
               </div>
@@ -480,11 +533,12 @@
                   </a>
                 </div>
             @endguest
-            <a href="wishlist.html" class="header-tools__item header-tools__cart">
+
+            <a href="{{ route('wishlist.index') }}" class="header-tools__item header-tools__cart">
               <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <use href="#icon_heart" />
               </svg>
-              @if(Card::instance('wishlist')->content()->count() > 0)
+              @if(Cart::instance('wishlist')->content()->count() > 0)
                 <span class="cart-amount d-block position-absolute js-cart-items-count">
                   {{ Cart::instance('wishlist')->content()->count() }}
                 </span>
@@ -496,7 +550,7 @@
                 <use href="#icon_cart" />
               </svg>
             
-              @if(Cart::count() > 0)
+              @if(Cart::instance('cart')->content()->count() > 0)
                 <span class="cart-amount d-block position-absolute js-cart-items-count">
                   {{ Cart::count() }}
                 </span>
@@ -518,9 +572,10 @@
                 <img src="{{ asset('assets/images/logo.png') }}" alt="SurfsideMedia" class="logo__image d-block" />
               </a>
             </div>
-            <p class="footer-address">123 Beach Avenue, Surfside City, CA 00000</p>
-            <p class="m-0"><strong class="fw-medium">contact@surfsidemedia.in</strong></p>
-            <p><strong class="fw-medium">+1 000-000-0000</strong></p>
+            <p class="footer-address">Công Ty TNHH Công Nghệ QC Việt Nam</p>
+            <p class="footer-address">Số 61, ngõ 100, Nguyễn Xiển Thanh Xuân - Hà Nội</p>
+            <p class="m-0"><strong class="fw-medium">info@qctech.vn</strong></p>
+            <p><strong class="fw-medium">0985 844 799</strong></p>
   
             <ul class="social-links list-unstyled d-flex flex-wrap mb-0">
               <li>
@@ -603,21 +658,15 @@
           </div>
   
           <div class="footer-column footer-menu mb-4 mb-lg-0">
-            <h6 class="sub-menu__title text-uppercase">Categories</h6>
-            <ul class="sub-menu__list list-unstyled">
-              <li class="sub-menu__item"><a href="#" class="menu-link menu-link_us-s">Shirts</a></li>
-              <li class="sub-menu__item"><a href="#" class="menu-link menu-link_us-s">Jeans</a></li>
-              <li class="sub-menu__item"><a href="#" class="menu-link menu-link_us-s">Shoes</a></li>
-              <li class="sub-menu__item"><a href="#" class="menu-link menu-link_us-s">Bags</a></li>
-              <li class="sub-menu__item"><a href="#" class="menu-link menu-link_us-s">Shop All</a></li>
-            </ul>
+            <h6 class="sub-menu__title text-uppercase">Maps</h6>
+            <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d668.8941393873979!2d105.80270082475626!3d20.988895224867605!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3135acbf8cf12529%3A0xd272a499f5acbef6!2zNjEgTmcuIDEwMCDEkC4gTmd1eeG7hW4gWGnhu4NuLCBUaGFuaCBYdcOibiBOYW0sIFRoYW5oIFh1w6JuLCBIw6AgTuG7mWksIFZp4buHdCBOYW0!5e1!3m2!1svi!2s!4v1748854273796!5m2!1svi!2s" style="border:0;" width="100%" height="82%" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
           </div>
         </div>
       </div>
   
       <div class="footer-bottom">
         <div class="container d-md-flex align-items-center">
-          <span class="footer-copyright me-auto">©2024 Surfside Media</span>
+          <span class="footer-copyright me-auto">©2025 Giang DN </span>
           <div class="footer-settings d-md-flex align-items-center">
             <a href="privacy-policy.html">Privacy Policy</a> &nbsp;|&nbsp; <a href="terms-conditions.html">Terms &amp;
               Conditions</a>
@@ -666,12 +715,62 @@
   
     <div id="scrollTop" class="visually-hidden end-0"></div>
     <div class="page-overlay"></div>
-  
+
+    //pop up zalo 
+    <a href="https://zalo.me/0985844799" target="_blank" id="zalo-button">
+      <img src="{{ asset('images/zalo.png') }}" alt="Zalo Chat" />
+    </a>
+
     <script src="{{ asset('assets/js/plugins/jquery.min.js') }}"></script>
     <script src="{{ asset('assets/js/plugins/bootstrap.bundle.min.js') }}"></script>
     <script src="{{ asset('assets/js/plugins/bootstrap-slider.min.js') }}"></script>
     <script src="{{ asset('assets/js/plugins/swiper.min.js') }}"></script>
     <script src="{{ asset('assets/js/plugins/countdown.js') }}"></script>
+    <script>
+      $(function () {
+        $("#search-input").on("keyup", function () {
+          var searchQuery = $(this).val();
+          if (searchQuery.length > 2) {
+            $.ajax({
+              type: "GET",
+              url: "{{ route('home.search') }}",
+              data: { query: searchQuery },
+              dataType: "json",
+              success: function (data) {
+                $("#box-content-search").html(""); // Clear previous results
+
+                $.each(data, function (index, item) {
+                  var urlTemplate = "{{ route('shop.product.details', ['product_slug' => '__slug__']) }}";
+                  var link = urlTemplate.replace("__slug__", item.slug);
+                  var imagePath = "{{ asset('uploads/products/thumbnails') }}/" + item.image;
+
+                  var html = `
+                    <li>
+                      <ul>
+                        <li class="product-item gap14 mb-10">
+                          <div class="image no-bg">
+                            <img src="${imagePath}" alt="" />
+                          </div>
+                          <div class="flex items-center justify-between gap20 flex-grow">
+                            <div class="name">
+                              <a href="${link}" class="body-text">${item.name}</a>
+                            </div>
+                          </div> 
+                        </li>
+                        <li class="mb-10">
+                          <div class="divider"></div>
+                        </li>
+                      </ul>
+                    </li>
+                  `;
+                  $("#box-content-search").append(html);
+                });
+              }
+            });
+          }
+        });
+      });
+    </script>
     <script src="{{ asset('assets/js/theme.js') }}"></script>
     @stack("scripts")
   </body>

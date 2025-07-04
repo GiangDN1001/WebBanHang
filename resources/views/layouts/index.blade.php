@@ -389,7 +389,7 @@
                       <a href="details.html">
                         <img loading="lazy" src="{{ asset('assets/images/home/demo3/product-3-1.jpg') }}" width="258" height="313"
                           alt="Cropped Faux leather Jacket" class="pc__img">
-                        <img loading="lazy" src="{{ asset('assets/images/home/demo3/product-3-2.jpg') }}" width="258" height="313"
+                        <img loading="lazy" src="{{ assassetet('assets/images/home/demo3/product-3-2.jpg') }}" width="258" height="313"
                           alt="Cropped Faux leather Jacket" class="pc__img pc__img-second">
                       </a>
                     </div>
@@ -915,6 +915,7 @@
           <a class="btn-link btn-link_lg default-underline text-uppercase fw-medium" href="#">Load More</a>
         </div>
       </section>
+      
     </div>
 
     <div class="mb-3 mb-xl-5 pt-1 pb-4"></div>
