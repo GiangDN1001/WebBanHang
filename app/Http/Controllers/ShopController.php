@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\Product;
 use App\Models\Brand;
 use App\Models\Category;
-
+use App\Models\ProductVariant;
 class ShopController extends Controller
 {
     public function index(Request $request)
@@ -70,13 +70,15 @@ class ShopController extends Controller
     }
 
     public function product_details($product_slug)
-    {
-        $product = Product::where('slug', $product_slug)->firstOrFail();
+    {   
+        $product = Product::with('variants')->where('slug', $product_slug)->firstOrFail();
+        $variants = ProductVariant::where('product_id', $product->id)->get();
         $rproducts = Product::where('slug', '<>', $product_slug)
                             ->latest()
                             ->take(8)
                             ->get();
 
-        return view('details', compact('product', 'rproducts'));
+        return view('details', compact('product', 'rproducts','variants'));
     }
+
 }

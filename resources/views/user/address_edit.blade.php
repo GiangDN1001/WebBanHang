@@ -48,22 +48,22 @@
                                                     <label for="phone">Số điện thoại *</label>
                                                 </div>
                                             </div>
-                                            <div class="col-md-4">
+                                            {{-- <div class="col-md-4">
                                                 <div class="form-floating my-3">
                                                     <input type="text" class="form-control" name="zip" value="{{ old('zip', $address->zip) }}">
                                                     <label for="zip">Mã bưu điện *</label>
                                                 </div>
-                                            </div>
-                                            <div class="col-md-4">
-                                                <div class="form-floating my-3">
-                                                    <input type="text" class="form-control" name="state" value="{{ old('state', $address->state) }}">
-                                                    <label for="state">Tỉnh / Bang *</label>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-4">
+                                            </div> --}}
+                                            <div class="col-md-6">
                                                 <div class="form-floating my-3">
                                                     <input type="text" class="form-control" name="city" value="{{ old('city', $address->city) }}">
-                                                    <label for="city">Thành phố / Thị trấn *</label>
+                                                    <label for="city">Quận / Huyện *</label>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="form-floating my-3">
+                                                    <input type="text" class="form-control" name="state" value="{{ old('state', $address->state) }}">
+                                                    <label for="state">Thành phố / Thị trấn *</label>
                                                 </div>
                                             </div>
                                             <div class="col-md-6">
@@ -78,7 +78,7 @@
                                                     <label for="locality">Tên đường, Khu vực, Khu phố *</label>
                                                 </div>
                                             </div>
-                                            <div class="col-md-12">
+                                            {{-- <div class="col-md-12">
                                                 <div class="form-floating my-3">
                                                     <input type="text" class="form-control" name="landmark" value="{{ old('landmark', $address->landmark) }}">
                                                     <label for="landmark">Địa danh gần đó *</label>
@@ -89,7 +89,7 @@
                                                     <input type="text" class="form-control" name="country" value="{{ old('country', $address->country) }}">
                                                     <label for="country">Quốc gia *</label>
                                                 </div>
-                                            </div>
+                                            </div> --}}
                                             <div class="col-md-12">
                                                 <div class="form-floating my-3">
                                                     <select style="width: 100%; height: 65px;" class="form-select" name="type">

@@ -61,9 +61,9 @@ class UserController extends Controller
             'address' => 'required',
             'city' => 'required',
             'state' => 'required',
-            'country' => 'required',
-            'landmark' => 'required',
-            'zip' => 'required',
+            'country' => 'nullable',
+            'landmark' => 'nullable',
+            'zip' => 'nullable',
             'type' => 'required',
         ]);
 
@@ -99,9 +99,9 @@ class UserController extends Controller
             'address' => 'required',
             'city' => 'required',
             'state' => 'required',
-            'country' => 'required',
-            'landmark' => 'required',
-            'zip' => 'required',
+            'country' => 'nullable',
+            'landmark' => 'nullable',
+            'zip' => 'nullable',
             'type' => 'required',
         ]);
 

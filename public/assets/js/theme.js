@@ -1339,9 +1339,19 @@ function pureFadeOut(e) {
     window.location.href='./shop_order_complete.html';
   });
 
-  document.querySelector('.js-show-register').addEventListener('click', function(e) {
-    document.querySelector(this.getAttribute("href")).click();
+  document.addEventListener('DOMContentLoaded', function () {
+    const showRegisterBtn = document.querySelector('.js-show-register');
+    if (showRegisterBtn) {
+      showRegisterBtn.addEventListener('click', function(e) {
+        e.preventDefault();
+        const target = document.querySelector(this.getAttribute("href"));
+        if (target) {
+          target.click();
+        }
+      });
+    }
   });
+
 
   $('button.js-add-wishlist, a.add-to-wishlist').off('click').on('click', function() {
     if($(this).hasClass("active"))

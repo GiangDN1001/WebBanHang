@@ -13,6 +13,7 @@ use App\Models\OrderItem;
 use App\Models\Transaction;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\NewOrderNotification;
+use App\Models\ProductVariant;
 class CartController extends Controller
 {
     public function index() {
@@ -21,9 +22,46 @@ class CartController extends Controller
     }
 
     public function add_to_cart(Request $request) {
-        Cart::instance('cart')->add($request->id, $request->name, $request->quantity, $request->price)->associate('App\Models\Product');
-        return redirect()->back();
+        if ($request->has('variant_id') && $request->variant_id != null) {
+            // Trường hợp có biến thể
+            $variant = ProductVariant::findOrFail($request->variant_id);
+            $product = $variant->product;
+
+            Cart::instance('cart')->add([
+                'id' => $variant->id,
+                'name' => $product->name,
+                'qty' => 1,
+                'price' => $variant->sale_price ?? $variant->regular_price,
+                'weight' => 0,
+                'options' => [
+                    'product_id' => $product->id,
+                    'variant_title' => $variant->variant_title,
+                    'image' => $product->image
+                ]
+            ]);
+        } elseif ($request->has('product_id') && $request->product_id != null) {
+            // Trường hợp KHÔNG có biến thể
+            $product = \App\Models\Product::findOrFail($request->product_id);
+
+            Cart::instance('cart')->add([
+                'id' => $product->id,
+                'name' => $product->name,
+                'qty' => 1,
+                'price' => $product->sale_price ?? $product->regular_price,
+                'weight' => 0,
+                'options' => [
+                    'product_id' => $product->id,
+                    'variant_title' => null,
+                    'image' => $product->image
+                ]
+            ]);
+        } else {
+            return redirect()->back()->with('error', 'Không thể thêm sản phẩm vào giỏ hàng.');
+        }
+
+        return redirect()->back()->with('success', 'Đã thêm vào giỏ hàng');
     }
+
 
     public function increase_cart_quantity($rowId) {
         $product = Cart::instance('cart')->get($rowId);
@@ -183,11 +221,17 @@ class CartController extends Controller
         foreach(Cart::instance('cart')->content() as $item)
         {
             $orderitem = new OrderItem();
-            $orderitem->product_id = $item->id;
             $orderitem->order_id = $order->id;
+            $orderitem->product_id = $item->options->product_id;
+  
+            if (ProductVariant::find($item->id)) {
+                $orderitem->variant_id = $item->id;
+                $orderitem->variant_title = $item->options->variant_title;
+            }
+
             $orderitem->price = $item->price;
             $orderitem->quantity = $item->qty;
-            $orderitem->save();                   
+            $orderitem->save();  
         }
         $transaction = new Transaction();
         $transaction->user_id = $user_id;

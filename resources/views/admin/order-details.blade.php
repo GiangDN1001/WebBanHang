@@ -82,7 +82,7 @@
                             <th class="text-center">SKU</th>
                             <th class="text-center">Category</th>
                             <th class="text-center">Brand</th>                                                        
-                            <th class="text-center">Options</th>
+                            {{-- <th class="text-center">Options</th> --}}
                             <th class="text-center">Return Status</th>
                             <th class="text-center">Action</th>
                         </tr>
@@ -96,15 +96,21 @@
                                     <img src="{{asset('uploads/products/thumbnails')}}/{{$orderitem->product->image}}" alt="" class="image">
                                 </div>
                                 <div class="name">
-                                    <a href="{{route('shop.product.details',["product_slug"=>$orderitem->product->slug])}}" target="_blank" class="body-title-2">{{$orderitem->product->name}}</a>                                    
+                                    <a href="{{route('shop.product.details',["product_slug"=>$orderitem->product->slug])}}" target="_blank" class="body-title-2">
+                                        @if ($orderitem->variant && $orderitem->variant->variant_title)
+                                            {{ $orderitem->variant->variant_title }}
+                                        @else
+                                            {{ $orderitem->product->name }}
+                                        @endif
+                                    </a>                                    
                                 </div>  
                             </td>
-                            <td class="text-center">${{$orderitem->price}}</td>
+                            <td class="text-center">{{ number_format($orderitem->price,0,'.','.')}} ₫</td>                       
                             <td class="text-center">{{$orderitem->quantity}}</td>
                             <td class="text-center">{{$orderitem->product->SKU}}</td>
                             <td class="text-center">{{$orderitem->product->category->name}}</td>
                             <td class="text-center">{{$orderitem->product->brand->name}}</td>
-                            <td class="text-center">{{$orderitem->options}}</td>
+                            {{-- <td class="text-center">{{$orderitem->options}}</td> --}}
                             <td class="text-center">{{$orderitem->rstatus == 0 ? "No":"Yes"}}</td>                                                                                
                             <td class="text-center">
                                 <a href="{{route('shop.product.details',["product_slug"=>$orderitem->product->slug])}}" target="_blank">
@@ -146,15 +152,15 @@
             <table class="table table-striped table-bordered table-transaction">
                 <tr>
                     <th>Subtotal</th>
-                    <td>${{$transaction->order->subtotal}}</td>
+                    <td>{{number_format($transaction->order->subtotal,0,'.','.')}} ₫</td>
                     <th>Tax</th>
-                    <td>${{$transaction->order->tax}}</td>
+                    <td>{{number_format($transaction->order->tax,0,'.','.')}} ₫</td>
                     <th>Discount</th>
-                    <td>${{$transaction->order->discount}}</td>
+                    <td>{{number_format($transaction->order->discount,0,'.','.')}} ₫</td>                
                 </tr>
                 <tr>
                     <th>Total</th>
-                    <td>${{$transaction->order->total}}</td>
+                    <td>{{number_format($transaction->order->total,0,'.','.')}} ₫</td>
                     <th>Payment Mode</th>
                     <td>{{$transaction->mode}}</td>
                     <th>Status</th>

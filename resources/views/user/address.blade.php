@@ -32,7 +32,7 @@
                     </div>
                 </div>
                 <div class="my-account__address-list row">
-                    <h5>Địa chỉ giao hàng</h5>
+                    <h5 style="font-family: sans-serif">Địa chỉ giao hàng</h5>
 
                     @foreach($addresses as $address)
                         <div class="my-account__address-item col-md-6 mb-4">
@@ -45,11 +45,9 @@
                                 <a href="{{ route('user.address.edit', $address->id) }}">Sửa địa chỉ</a>
                             </div>
                             <div class="my-account__address-item__detail">
-                                <p>{{ $address->address }}</p>
-                                <p>{{ $address->locality }}, {{ $address->landmark }}</p>
-                                <p>{{ $address->city }}, {{ $address->state }}</p>
-                                <p>{{ $address->country }} - {{ $address->zip }}</p>
-                                <br>
+                                <p>{{ $address->address }}, {{ $address->locality }}, {{ $address->city }}, {{ $address->state }}</p>
+                                {{-- <p>{{ $address->country }}  {{ $address->zip }}</p> --}}
+                                {{-- <br> --}}
                                 <p>Mobile : {{ $address->phone }}</p>
                             </div>
                         </div>

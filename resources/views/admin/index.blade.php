@@ -138,7 +138,7 @@
                 </div>
 
             </div>
-
+            
             <div class="wg-box">
                 <div class="flex items-center justify-between">
                     <h5>Doanh thu tháng</h5>
@@ -194,7 +194,6 @@
 
         </div>
         <div class="tf-section mb-30">
-
             <div class="wg-box">
                 <div class="flex items-center justify-between">
                     <h5>Recent orders</h5>
@@ -278,21 +277,24 @@
                 var chartBar = function () {
 
                     var options = {
-                        series: [{
+                        series: [
+                        {
                             name: 'Total',
-                            data: [{{ $AmountM }}]
-                            
-                        }, {
+                            data: {!! json_encode($AmountM) !!}
+                        },
+                        {
                             name: 'Pending',
-                            data: [{{ $OrderedAmountM }}]
+                            data: {!! json_encode($OrderedAmountM) !!}
                         },
                         {
                             name: 'Delivered',
-                            data: [{{ $DeliveredAmountM }}]
-                        }, {
+                            data: {!! json_encode($DeliveredAmountM) !!}
+                        },
+                        {
                             name: 'Canceled',
-                            data: [{{ $CanceledAmountM }}]
-                        }],
+                            data: {!! json_encode($CanceledAmountM) !!}
+                        }
+                        ],
                         chart: {
                             type: 'bar',
                             height: 325,

@@ -23,6 +23,10 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
       integrity="sha512-SfTiTlX6kk+qitfevl/7LibUOeJWlt9rbyDn92a1DqWOw9vWG2MFoays0sgObmWazO5BQPiFucnnEAjpAB+/Sw=="
       crossorigin="anonymous" referrerpolicy="no-referrer">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@8/swiper-bundle.min.css" />
+    
+
     @stack("styles")
 </head>
 <body class="gradient-bg">
@@ -333,7 +337,7 @@
           </a>
         </div>
   
-        <a href="#" class="header-tools__item header-tools__cart js-open-aside" data-aside="cartDrawer">
+        <a href="{{ route('cart.index') }}" class="header-tools__item header-tools__cart js-open-aside" data-aside="cartDrawer">
           <svg class="d-block" width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
             <use href="#icon_cart" />
           </svg>
@@ -573,7 +577,7 @@
               </a>
             </div>
             <p class="footer-address">Công Ty TNHH Công Nghệ QC Việt Nam</p>
-            <p class="footer-address">Số 61, ngõ 100, Nguyễn Xiển Thanh Xuân - Hà Nội</p>
+            <p class="footer-address">Số 61, ngõ 100, Nguyễn Xiển - Thanh Liệt - Hà Nội</p>
             <p class="m-0"><strong class="fw-medium">info@qctech.vn</strong></p>
             <p><strong class="fw-medium">0985 844 799</strong></p>
   
@@ -623,28 +627,27 @@
           </div>
   
           <div class="footer-column footer-menu mb-4 mb-lg-0">
-            <h6 class="sub-menu__title text-uppercase">Company</h6>
+            <h6 style="font-family: Roboto;" class="sub-menu__title text-uppercase">Về chúng tôi</h6>
             <ul class="sub-menu__list list-unstyled">
-              <li class="sub-menu__item"><a href="about-2.html" class="menu-link menu-link_us-s">About Us</a></li>
-              <li class="sub-menu__item"><a href="#" class="menu-link menu-link_us-s">Careers</a></li>
-              <li class="sub-menu__item"><a href="#" class="menu-link menu-link_us-s">Affiliates</a></li>
-              <li class="sub-menu__item"><a href="blog_list1.html" class="menu-link menu-link_us-s">Blog</a></li>
-              <li class="sub-menu__item"><a href="contact-2.html" class="menu-link menu-link_us-s">Contact Us</a></li>
+              <li class="sub-menu__item"><a href="about-2.html" class="menu-link menu-link_us-s">Chính sách quy định</a></li>
+              <li class="sub-menu__item"><a href="#" class="menu-link menu-link_us-s">Hợp tác phát triển</a></li>
+              <li class="sub-menu__item"><a href="#" class="menu-link menu-link_us-s">Cam kết chất lượng</a></li>
+              <li class="sub-menu__item"><a href="blog_list1.html" class="menu-link menu-link_us-s">Thông tin công ty</a></li>
             </ul>
           </div>
   
           <div class="footer-column footer-menu mb-4 mb-lg-0">
-            <h6 class="sub-menu__title text-uppercase">Shop</h6>
+            <h6  style="font-family: Roboto;" class="sub-menu__title text-uppercase">Chính sách</h6>
             <ul class="sub-menu__list list-unstyled">
-              <li class="sub-menu__item"><a href="shop2.html" class="menu-link menu-link_us-s">New Arrivals</a></li>
-              <li class="sub-menu__item"><a href="shop3.html" class="menu-link menu-link_us-s">Accessories</a></li>
-              <li class="sub-menu__item"><a href="shop4.html" class="menu-link menu-link_us-s">Men</a></li>
-              <li class="sub-menu__item"><a href="shop5.html" class="menu-link menu-link_us-s">Women</a></li>
-              <li class="sub-menu__item"><a href="shop1.html" class="menu-link menu-link_us-s">Shop All</a></li>
+              <li class="sub-menu__item"><a href="shop2.html" class="menu-link menu-link_us-s">Chính sách của công ty</a></li>
+              <li class="sub-menu__item"><a href="shop3.html" class="menu-link menu-link_us-s">Chính sách giao hàng </a></li>
+              <li class="sub-menu__item"><a href="shop4.html" class="menu-link menu-link_us-s">Cách thức thanh toán</a></li>
+              <li class="sub-menu__item"><a href="shop5.html" class="menu-link menu-link_us-s">Chính sách bảo mật</a></li>
+              <li class="sub-menu__item"><a href="shop1.html" class="menu-link menu-link_us-s">Chính sách đổi trả hàng hoàn tiền</a></li>
             </ul>
           </div>
   
-          <div class="footer-column footer-menu mb-4 mb-lg-0">
+          {{-- <div class="footer-column footer-menu mb-4 mb-lg-0">
             <h6 class="sub-menu__title text-uppercase">Help</h6>
             <ul class="sub-menu__list list-unstyled">
               <li class="sub-menu__item"><a href="#" class="menu-link menu-link_us-s">Customer Service</a></li>
@@ -655,7 +658,7 @@
               <li class="sub-menu__item"><a href="#" class="menu-link menu-link_us-s">Legal & Privacy</a></li>
               <li class="sub-menu__item"><a href="#" class="menu-link menu-link_us-s">Gift Card</a></li>
             </ul>
-          </div>
+          </div> --}}
   
           <div class="footer-column footer-menu mb-4 mb-lg-0">
             <h6 class="sub-menu__title text-uppercase">Maps</h6>
@@ -716,62 +719,63 @@
     <div id="scrollTop" class="visually-hidden end-0"></div>
     <div class="page-overlay"></div>
 
-    //pop up zalo 
+    
     <a href="https://zalo.me/0985844799" target="_blank" id="zalo-button">
       <img src="{{ asset('images/zalo.png') }}" alt="Zalo Chat" />
     </a>
 
-    <script src="{{ asset('assets/js/plugins/jquery.min.js') }}"></script>
-    <script src="{{ asset('assets/js/plugins/bootstrap.bundle.min.js') }}"></script>
-    <script src="{{ asset('assets/js/plugins/bootstrap-slider.min.js') }}"></script>
-    <script src="{{ asset('assets/js/plugins/swiper.min.js') }}"></script>
-    <script src="{{ asset('assets/js/plugins/countdown.js') }}"></script>
-    <script>
-      $(function () {
-        $("#search-input").on("keyup", function () {
-          var searchQuery = $(this).val();
-          if (searchQuery.length > 2) {
-            $.ajax({
-              type: "GET",
-              url: "{{ route('home.search') }}",
-              data: { query: searchQuery },
-              dataType: "json",
-              success: function (data) {
-                $("#box-content-search").html(""); // Clear previous results
+      <script src="{{ asset('assets/js/plugins/jquery.min.js') }}"></script>
+      <script src="{{ asset('assets/js/plugins/bootstrap.bundle.min.js') }}"></script>
+      <script src="{{ asset('assets/js/plugins/bootstrap-slider.min.js') }}"></script>
+      <script src="{{ asset('assets/js/plugins/swiper.min.js') }}"></script>
+      <script src="{{ asset('assets/js/plugins/countdown.js') }}"></script>
+      <script>
+        $(function () {
+          $("#search-input").on("keyup", function () {
+            var searchQuery = $(this).val();
+            if (searchQuery.length > 2) {
+              $.ajax({
+                type: "GET",
+                url: "{{ route('home.search') }}",
+                data: { query: searchQuery },
+                dataType: "json",
+                success: function (data) {
+                  $("#box-content-search").html(""); // Clear previous results
 
-                $.each(data, function (index, item) {
-                  var urlTemplate = "{{ route('shop.product.details', ['product_slug' => '__slug__']) }}";
-                  var link = urlTemplate.replace("__slug__", item.slug);
-                  var imagePath = "{{ asset('uploads/products/thumbnails') }}/" + item.image;
+                  $.each(data, function (index, item) {
+                    var urlTemplate = "{{ route('shop.product.details', ['product_slug' => '__slug__']) }}";
+                    var link = urlTemplate.replace("__slug__", item.slug);
+                    var imagePath = "{{ asset('uploads/products/thumbnails') }}/" + item.image;
 
-                  var html = `
-                    <li>
-                      <ul>
-                        <li class="product-item gap14 mb-10">
-                          <div class="image no-bg">
-                            <img src="${imagePath}" alt="" />
-                          </div>
-                          <div class="flex items-center justify-between gap20 flex-grow">
-                            <div class="name">
-                              <a href="${link}" class="body-text">${item.name}</a>
+                    var html = `
+                      <li>
+                        <ul>
+                          <li class="product-item gap14 mb-10">
+                            <div class="image no-bg">
+                              <img src="${imagePath}" alt="" />
                             </div>
-                          </div> 
-                        </li>
-                        <li class="mb-10">
-                          <div class="divider"></div>
-                        </li>
-                      </ul>
-                    </li>
-                  `;
-                  $("#box-content-search").append(html);
-                });
-              }
-            });
-          }
+                            <div class="flex items-center justify-between gap20 flex-grow">
+                              <div class="name">
+                                <a href="${link}" class="body-text">${item.name}</a>
+                              </div>
+                            </div> 
+                          </li>
+                          <li class="mb-10">
+                            <div class="divider"></div>
+                          </li>
+                        </ul>
+                      </li>
+                    `;
+                    $("#box-content-search").append(html);
+                  });
+                }
+              });
+            }
+          });
         });
-      });
-    </script>
-    <script src="{{ asset('assets/js/theme.js') }}"></script>
+      </script>
+      <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js"></script>
+      <script src="{{ asset('assets/js/theme.js') }}"></script>
     @stack("scripts")
   </body>
 </html>

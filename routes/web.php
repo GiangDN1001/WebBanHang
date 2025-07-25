@@ -8,8 +8,17 @@ use App\Http\Controllers\WishlistController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\AdminController;
 use App\Http\Middleware\AuthAdmin;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 Auth::routes();
+
+Route::post('/logout', function (Request $request) {
+    Auth::logout();
+    $request->session()->invalidate();
+    $request->session()->regenerateToken();
+    return redirect('/'); 
+})->name('logout');
 
 // ====== Home & Pages ======
 Route::get('/', [HomeController::class, 'index'])->name('home.index');

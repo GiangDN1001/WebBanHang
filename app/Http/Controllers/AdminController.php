@@ -22,6 +22,7 @@ use DB;
 use App\Models\Contact;
 use Auth;
 use Hash;
+use App\Models\ProductVariant;
 
 class AdminController extends Controller
 {
@@ -53,21 +54,24 @@ class AdminController extends Controller
                 SELECT 
                     MONTH(created_at) AS MonthNo,
                     SUM(total) AS TotalAmount,
-                    SUM(IF(status = 'ordered', total, 0)) AS TotalOrderedAmount,
-                    SUM(IF(status = 'delivered', total, 0)) AS TotalDeliveredAmount,
-                    SUM(IF(status = 'canceled', total, 0)) AS TotalCanceledAmount
-                FROM Orders
-                WHERE YEAR(created_at) = YEAR(NOW())
+                    SUM(CASE WHEN status = 'ordered' THEN total ELSE 0 END) AS TotalOrderedAmount,
+                    SUM(CASE WHEN status = 'delivered' THEN total ELSE 0 END) AS TotalDeliveredAmount,
+                    SUM(CASE WHEN status = 'canceled' THEN total ELSE 0 END) AS TotalCanceledAmount
+                FROM orders
+                WHERE YEAR(created_at) = 2025
                 GROUP BY MONTH(created_at)
             ) D ON D.MonthNo = M.id
             ORDER BY M.id
         ");
 
+
+
         // Ép kiểu float để đảm bảo biểu đồ nhận đúng dữ liệu số
-        $AmountM = implode(',', collect($monthlyDatas)->pluck('TotalAmount')->map(fn($x) => (float) $x)->toArray());
-        $OrderedAmountM = implode(',', collect($monthlyDatas)->pluck('TotalOrderedAmount')->map(fn($x) => (float) $x)->toArray());
-        $DeliveredAmountM = implode(',', collect($monthlyDatas)->pluck('TotalDeliveredAmount')->map(fn($x) => (float) $x)->toArray());
-        $CanceledAmountM = implode(',', collect($monthlyDatas)->pluck('TotalCanceledAmount')->map(fn($x) => (float) $x)->toArray());
+        $AmountM = collect($monthlyDatas)->pluck('TotalAmount')->map(fn($x) => (float) $x)->toArray();
+        $OrderedAmountM = collect($monthlyDatas)->pluck('TotalOrderedAmount')->map(fn($x) => (float) $x)->toArray();
+        $DeliveredAmountM = collect($monthlyDatas)->pluck('TotalDeliveredAmount')->map(fn($x) => (float) $x)->toArray();
+        $CanceledAmountM = collect($monthlyDatas)->pluck('TotalCanceledAmount')->map(fn($x) => (float) $x)->toArray();
+
 
         // Tổng cộng cho từng loại trạng thái
         $TotalAmount = collect($monthlyDatas)->sum('TotalAmount');
@@ -330,6 +334,20 @@ class AdminController extends Controller
         }
         $product->images = $galleyry_images;
         $product->save();
+        if ($request->has('variants')) {
+            foreach ($request->variants as $key => $variant) {
+                if (!empty($variant['variant_name'])) {
+                    $product->variants()->create([
+                        'product_id' => $product->id,
+                        'variant_name' => $variant['variant_name'],
+                        'variant_title' => $variant['variant_title'], 
+                        'regular_price' => $variant['regular_price'],
+                        'sale_price' => $variant['sale_price'],
+                        'quantity' => $variant['quantity'],
+                    ]);
+                }
+            }
+        }
         return redirect()->route('admin.products')->with('status', 'Product has been added successfully!');
     }
 
@@ -421,6 +439,18 @@ class AdminController extends Controller
             $product->images = implode(',', $galleryArr);
         } else {
             $product->images = $request->input('old_images');
+        }
+        $variants = $request->input('variants', []);
+        foreach ($variants as $data) {
+            if (isset($data['id'])) {
+                $variant = ProductVariant::find($data['id']);
+                if ($variant) {
+                    $variant->update($data);
+                }
+            } else {
+                $data['product_id'] = $product->id;
+                ProductVariant::create($data);
+            }
         }
         $product->save();
         return redirect()->route('admin.products')->with('status', 'Product has been updated successfully!');

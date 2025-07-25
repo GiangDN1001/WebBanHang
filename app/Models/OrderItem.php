@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class OrderItem extends Model
 {
     use HasFactory;
-        public function product()
+    public function product()
     {
         return $this->belongsTo(Product::class);
     }
@@ -20,5 +20,10 @@ class OrderItem extends Model
     public function review()
     {
         return $this->hasOne(Review::class,'order_item_id');
+    }
+
+    public function variant()
+    {
+        return $this->belongsTo(ProductVariant::class, 'variant_id');
     }
 }

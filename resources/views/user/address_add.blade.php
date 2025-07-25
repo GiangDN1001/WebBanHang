@@ -24,7 +24,7 @@
                         <div class="col-md-8">
                             <div class="card mb-5">
                                 <div class="card-header">
-                                    <h5>Thêm địa chỉ mới</h5>
+                                    <h5 style="font-family: sans-serif">Thêm địa chỉ mới</h5>
                                 </div>
                                 <div class="card-body">
                                     @if(session('status'))
@@ -49,26 +49,26 @@
                                                     <span class="text-danger"></span>
                                                 </div>
                                             </div>
-                                            <div class="col-md-4">
+                                            {{-- <div class="col-md-4">
                                                 <div class="form-floating my-3">
                                                     <input type="text" class="form-control" name="zip" value="{{ old('zip') }}">
                                                     <label for="zip">Mã bưu chính *</label>
                                                     <span class="text-danger"></span>
                                                 </div>
-                                            </div>                        
-                                            <div class="col-md-4">
-                                                <div class="form-floating mt-3 mb-3">
-                                                    <input type="text" class="form-control" name="state" value="{{ old('state') }}">
-                                                    <label for="state">Tỉnh / Thành phố *</label>
-                                                    <span class="text-danger"></span>
-                                                </div>                            
-                                            </div>
-                                            <div class="col-md-4">
+                                            </div>                         --}}
+                                            <div class="col-md-6">
                                                 <div class="form-floating my-3">
                                                     <input type="text" class="form-control" name="city" value="{{ old('city') }}">
                                                     <label for="city">Quận / Huyện *</label>
                                                     <span class="text-danger"></span>
                                                 </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="form-floating mt-3 mb-3">
+                                                    <input type="text" class="form-control" name="state" value="{{ old('state') }}">
+                                                    <label for="state">Tỉnh / Thành phố *</label>
+                                                    <span class="text-danger"></span>
+                                                </div>                            
                                             </div>
                                             <div class="col-md-6">
                                                 <div class="form-floating my-3">
@@ -84,21 +84,21 @@
                                                     <span class="text-danger"></span>
                                                 </div>
                                             </div>    
-                                            <div class="col-md-12">
+                                            {{-- <div class="col-md-12">
                                                 <div class="form-floating my-3">
                                                     <input type="text" class="form-control" name="landmark" value="{{ old('landmark') }}">
                                                     <label for="landmark">Địa điểm gần đó *</label>
                                                     <span class="text-danger"></span>
                                                 </div>
-                                            </div>  
+                                            </div>   --}}
 
-                                            <div class="col-md-12">
+                                            {{-- <div class="col-md-12">
                                                 <div class="form-floating my-3">
                                                     <input type="text" class="form-control" name="country" value="{{ old('country') }}">
                                                     <label for="country">Quốc gia *</label>
                                                     <span class="text-danger"></span>
                                                 </div>
-                                            </div>
+                                            </div> --}}
                                             <div class="col-md-12">
                                                 <div class="form-floating my-3">
                                                     <select style="width: 100%; height: 65px;" class="form-select" name="type">

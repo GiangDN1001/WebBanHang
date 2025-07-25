@@ -10,27 +10,27 @@
 <main class="pt-90">
     <div class="mb-4 pb-4"></div>
     <section class="shop-checkout container">
-        <h2 class="page-title">Shipping and Checkout</h2>
+        <h2 class="page-title">Vận chuyển và thanh toán</h2>
         <div class="checkout-steps">
             <a href="{{route('cart.index')}}" class="checkout-steps__item active">
                 <span class="checkout-steps__item-number">01</span>
                 <span class="checkout-steps__item-title">
-                    <span>Shopping Bag</span>
-                    <em>Manage Your Items List</em>
+                    <span>Túi sản phẩm</span>
+                    <em>Quản lý danh sách sản phẩm của bạn</em>
                 </span>
             </a>
             <a href="{{route('cart.checkout')}}" class="checkout-steps__item active">
                 <span class="checkout-steps__item-number">02</span>
                 <span class="checkout-steps__item-title">
-                    <span>Shipping and Checkout</span>
-                    <em>Checkout Your Items List</em>
+                    <span>Vận chuyển và thanh toán</span>
+                    <em>Kiểm tra danh sách sản phẩm của bạn</em>
                 </span>
             </a>
             <a href="#" class="checkout-steps__item">
                 <span class="checkout-steps__item-number">03</span>
                 <span class="checkout-steps__item-title">
-                    <span>Confirmation</span>
-                    <em>Order Confirmation</em>
+                    <span>Thông tin giỏ hàng</span>
+                    <em>Xem lại và gửi hàng</em>
                 </span>
             </a>
         </div>
@@ -40,12 +40,12 @@
                 <div class="billing-info__wrapper">
                     <div class="row">
                         <div class="col-6">
-                            <h4>SHIPPING DETAILS</h4> 
+                            <h4>CHI TIẾT VẬN CHUYỂN</h4> 
                         </div>
                         <div class="col-6">
                             @if($address)  
-                            <a href="{{route('user.address')}}" class="btn btn-info btn-sm float-right">Change Address</a> 
-                            <a href="{{route('user.address.edit', $address->id)}}" class="btn btn-warning btn-sm float-right mr-3">Edit Address</a> 
+                            <a href="{{route('user.address')}}" class="btn btn-info btn-sm float-right">Thay đổi địa chỉ</a> 
+                            <a href="{{route('user.address.edit', $address->id)}}" class="btn btn-warning btn-sm float-right mr-3">Sửa địa chỉ</a> 
                             @endif
                         </div>
                     </div>   
@@ -131,12 +131,12 @@
                 <div class="checkout__totals-wrapper">
                     <div class="sticky-content">
                         <div class="checkout__totals">
-                            <h3>Your Order</h3>
+                            <h3>ĐƠN HÀNG CỦA BẠN</h3>
                             <table class="checkout-cart-items">
                                 <thead>
                                     <tr>
-                                        <th>PRODUCT</th>
-                                        <th class="text-right">SUBTOTAL</th>
+                                        <th>SẢN PHẨM</th>
+                                        <th style="text-align: center" class="text-right">GIÁ</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -195,13 +195,13 @@
                                 <table class="checkout-totals">
                                 <tbody>
                                     <tr>
-                                        <th>SUBTOTAL</th>
+                                        <th>Tổng tiền</th>
                                         <td class="text-right">
                                             {{ number_format(floatval(str_replace(',', '', Cart::instance('cart')->subtotal())), 0, '.', '.') }}₫
                                         </td>
                                     </tr>
                                     <tr>
-                                        <th>SHIPPING</th>
+                                        <th>GIAO HÀNG</th>
                                         <td class="text-right">Free</td>
                                     </tr>
                                     {{-- <tr>
@@ -211,7 +211,7 @@
                                         </td>
                                     </tr> --}}
                                     <tr class="cart-total">
-                                        <th>TOTAL</th>
+                                        <th>TỔNG CỘNG</th>
                                         <td class="text-right">
                                             {{ number_format(floatval(str_replace(',', '', Cart::instance('cart')->total())), 0, '.', '.') }}₫
                                         </td>
@@ -245,7 +245,7 @@
                         </div>
                         <form action="{{route('cart.confirmation')}}" method="POST">
                             @csrf
-                            <button type="submit" class="btn btn-primary">PLACE ORDER</button>
+                            <button type="submit" class="btn btn-primary">THANH TOÁN</button>
                         </form>
                     </div>
                 </div>

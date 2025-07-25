@@ -206,6 +206,42 @@
                     @error('featured') <span class=" alert alert-danger text-center">{{ $message }}</span> @enderror
 
                 </div>
+                <div class="variant-group">
+                    <label>Biến thể sản phẩm (kích thước và giá):</label>
+                    <div id="variant-wrapper">
+                        <div class="variant-item border p-3 mb-2">
+                            <div class="form-group">
+                                <label>Tên biến thể</label>
+                                <input type="text" name="variants[0][variant_name]" placeholder="Kích thước (VD: 32 inch)">
+                            </div>
+
+                            <div class="form-group">
+                                <label>Tiêu đề biến thể</label>
+                                <input type="text" name="variants[0][variant_title]" class="form-control" placeholder="Tên hiển thị của biến thể">
+                            </div>
+
+                            <div class="form-group">
+                                <label>Giá gốc</label>
+                                <input type="text" name="variants[0][regular_price]" placeholder="Giá gốc">
+                            </div>
+
+                            <div class="form-group">
+                                <label>Giá sale</label>
+                                <input type="text" name="variants[0][sale_price]" placeholder="Giá sale">
+                            </div>
+
+                            <div class="form-group">
+                                <label>Số lượng</label>
+                                <input type="number" name="variants[0][quantity]" placeholder="Số lượng">
+                            </div>
+                            <button type="button" class="btn btn-danger btn-sm mt-2 remove-variant">Xóa biến thể</button>
+
+                        </div>
+                    </div>
+                </div>
+
+                <button type="button" onclick="addVariant()">Thêm biến thể</button>
+
                 <div class="cols gap10">
                     <button class="tf-button w-full" type="submit">Add product</button>
                 </div>
@@ -306,5 +342,47 @@
             document.querySelector('#short_description').value = tinymce.get('short_description').getContent();
             document.querySelector('#description').value = tinymce.get('description').getContent();
         });
+    </script>
+
+    <script>
+    let variantIndex = 1;
+    function addVariant() {
+        const wrapper = document.getElementById('variant-wrapper');
+        const html = `
+            <div class="variant-item border p-3 mb-2">
+                <div class="form-group">
+                    <label>Tên biến thể</label>
+                    <input type="text" name="variants[${variantIndex}][variant_name]" placeholder="Kích thước (VD: 32 inch)">
+                </div>
+                
+                <div class="form-group">
+                    <label>Tiêu đề biến thể</label>
+                    <input type="text" name="variants[${variantIndex}][variant_title]" placeholder="Tiêu đề biến thể">
+                </div>
+
+                <div class="form-group">
+                    <label>Giá gốc</label>
+                    <input type="number" name="variants[${variantIndex}][regular_price]" placeholder="Giá gốc">
+                </div>
+
+                <div class="form-group">
+                    <label>Giá sale</label>
+                    <input type="number" name="variants[${variantIndex}][sale_price]" placeholder="Giá khuyến mãi">
+                </div>
+
+                <div class="form-group">
+                    <label>Số lượng</label>
+                    <input type="number" name="variants[${variantIndex}][quantity]" placeholder="Số lượng">
+                </div>
+                <button type="button" class="btn btn-danger btn-sm mt-2 remove-variant">Xóa biến thể</button>
+            </div>`;
+        wrapper.insertAdjacentHTML('beforeend', html);
+        variantIndex++;
+        document.addEventListener('click', function (e) {
+            if (e.target.classList.contains('remove-variant')) {
+            e.target.closest('.variant-item').remove();
+            }
+        });
+    }
     </script>
 @endpush

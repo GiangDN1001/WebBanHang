@@ -29,10 +29,10 @@
             <div class="layout-wrap">
 
                 <!-- <div id="preload" class="preload-container">
-    <div class="preloading">
-        <span></span>
-    </div>
-</div> -->
+                    <div class="preloading">
+                        <span></span>
+                    </div>
+                </div> -->
 
                 <div class="section-menu-left">
                     <div class="box-logo">
@@ -367,7 +367,7 @@
                         @yield('content')
 
                         <div class="bottom-page">
-                            <div class="body-text">Copyright © 2024 SurfsideMedia</div>
+                            <div class="body-text">Copyright Giang DN 2025 QC</div>
                         </div>
                     </div>
 

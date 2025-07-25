@@ -20,9 +20,9 @@ return new class extends Migration
             $table->text('address');
             $table->string('city');
             $table->string('state');
-            $table->string('country');
+            $table->string('country')->nullable();
             $table->string('landmark')->nullable();
-            $table->string('zip');
+            $table->string('zip')->nullable();
             $table->string('type')->default('home');
             $table->boolean('isdefault')->default(false);            
             $table->timestamps();  

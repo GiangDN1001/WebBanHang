@@ -53,61 +53,69 @@
             </thead>
             <tbody>
               @foreach ($items as $item)
+                @php
+                  $product = \App\Models\Product::find($item->options->product_id ?? null);
+                @endphp
                 <tr>
-                    <td>
+                  <td>
                     <div class="shopping-cart__product-item">
-                        <img loading="lazy" src="{{ asset('uploads/products/thumbnails') }}/{{ $item->model->image }}" width="120" height="120" alt="{{ $item->name }}" />
+                      @if($product && $product->image)
+                        <img loading="lazy" src="{{ asset('uploads/products/thumbnails/' . $product->image) }}" width="120" height="120" alt="{{ $item->name }}" />
+                      @else
+                        <img loading="lazy" src="{{ asset('images/no-image.jpg') }}" width="120" height="120" alt="No Image Available" />
+                      @endif
                     </div>
-                    </td>
-                    <td>
+                  </td>
+                  <td>
                     <div class="shopping-cart__product-item__detail">
-                      <h4  style="font-family: 'Roboto'"> {{ \Illuminate\Support\Str::limit($item->name, 50) }}</h4>
+                      <h4 style="font-family: 'Roboto'">
+                        {{ $item->options->variant_title ?? $item->name }}
+                      </h4>
                       <ul class="shopping-cart__product-item__options">
-                      {{-- <li>Color: Yellow</li>
-                      <li>Size: L</li> --}}
+                        {{-- Thông tin biến thể thêm nếu cần --}}
                       </ul>
                     </div>
-                    </td>
-                    <td>
-                    <span class="shopping-cart__product-price">{{ number_format($item->price, 0,'.','.') }}₫</span>
-                    </td>
-                    <td>
+                  </td>
+                  <td>
+                    <span class="shopping-cart__product-price">{{ number_format($item->price, 0, '.', '.') }}₫</span>
+                  </td>
+                  <td>
                     <div class="qty-control position-relative">
-                        <input type="number" name="quantity" value="{{ $item->qty }}" min="1" class="qty-control__number text-center">
-                        <form method="POST" action="{{ route('cart.qty.decrease',['rowId'=>$item->rowId]) }}">
-                          @csrf
-                          @method('PUT')
-                          <div class="qty-control__reduce">-</div>
-                        </form>
-                        <form method="POST" action="{{ route('cart.qty.increase',['rowId'=>$item->rowId]) }}">
-                          @csrf
-                          @method('PUT')
-                          <div class="qty-control__increase">+</div>
-                        </form>
-                    </div>
-                    </td>
-                    <td>
-                      <span class="shopping-cart__subtotal">
-                          {{ rtrim(rtrim($item->subTotal(), '0'), '.') }}₫
-                      </span>
-
-                    </td>
-                    <td>
-                      <form method="POST" action="{{ route('cart.item.remove',['rowId'=>$item->rowId]) }}">
+                      <input type="number" name="quantity" value="{{ $item->qty }}" min="1" class="qty-control__number text-center">
+                      <form method="POST" action="{{ route('cart.qty.decrease', ['rowId' => $item->rowId]) }}">
                         @csrf
-                        @method('DELETE')
-                        <a href="javascript:void(0)" class="remove-cart">
-                          <svg width="10" height="10" viewBox="0 0 10 10" fill="#767676" xmlns="http://www.w3.org/2000/svg">
+                        @method('PUT')
+                        <div class="qty-control__reduce">-</div>
+                      </form>
+                      <form method="POST" action="{{ route('cart.qty.increase', ['rowId' => $item->rowId]) }}">
+                        @csrf
+                        @method('PUT')
+                        <div class="qty-control__increase">+</div>
+                      </form>
+                    </div>
+                  </td>
+                  <td>
+                    <span class="shopping-cart__subtotal">
+                      {{ rtrim(rtrim($item->subTotal(), '0'), '.') }}₫
+                    </span>
+                  </td>
+                  <td>
+                    <form method="POST" action="{{ route('cart.item.remove', ['rowId' => $item->rowId]) }}">
+                      @csrf
+                      @method('DELETE')
+                      <a href="javascript:void(0)" class="remove-cart">
+                        <svg width="10" height="10" viewBox="0 0 10 10" fill="#767676" xmlns="http://www.w3.org/2000/svg">
                           <path d="M0.259435 8.85506L9.11449 0L10 0.885506L1.14494 9.74056L0.259435 8.85506Z" />
                           <path d="M0.885506 0.0889838L9.74057 8.94404L8.85506 9.82955L0 0.97449L0.885506 0.0889838Z" />
-                          </svg>
-                        </a>
-                      </form>
-                    </td>
+                        </svg>
+                      </a>
+                    </form>
+                  </td>
                 </tr>
               @endforeach
             </tbody>
           </table>
+
           
           <div class="cart-table-footer">
               @if(!Session::has("coupon"))                       
