@@ -1,4 +1,3 @@
-# Dùng PHP + Apache + Composer + SQLite
 FROM php:8.2-apache
 
 # Cài extension
@@ -15,14 +14,17 @@ WORKDIR /var/www/html
 # Copy source
 COPY . .
 
+# Copy .env
+COPY .env.example .env
+
 # Cài thư viện Laravel
 RUN composer install --optimize-autoloader --no-dev
 
-# Tạo app key và cache config
-RUN php artisan config:clear && php artisan key:generate
-
-# Set quyền cho storage
+# Set quyền cho thư mục cần thiết
 RUN chmod -R 775 storage bootstrap/cache
+
+# Chạy các lệnh Artisan
+RUN php artisan config:clear && php artisan key:generate
 
 EXPOSE 80
 CMD ["php", "artisan", "serve", "--host=0.0.0.0", "--port=80"]
