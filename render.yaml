@@ -1,20 +1,22 @@
 services:
   - type: web
     name: laravel-app
-    env: php
+    env: docker
     plan: free
+    repo: https://github.com/GiangDN1001/WebBanHang
+    branch: main
+    dockerfilePath: ./Dockerfile
+    buildCommand: ""
+    startCommand: ""
     buildCommand: |
-      composer install --no-dev --optimize-autoloader
+      composer install --no-dev
       php artisan key:generate
-      php artisan migrate --force
-      php artisan storage:link
-    startCommand: php artisan serve --host 0.0.0.0 --port 10000
+      php artisan config:cache
+    startCommand: php artisan serve --host 0.0.0.0 --port $PORT
     envVars:
       - key: APP_ENV
         value: production
       - key: APP_DEBUG
         value: false
-      - key: DB_CONNECTION
-        value: sqlite
-      - key: DB_DATABASE
-        value: /opt/render/project/src/database/database.sqlite
+      - key: APP_KEY
+        generateValue: true
