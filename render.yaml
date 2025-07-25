@@ -6,13 +6,15 @@ services:
     repo: https://github.com/GiangDN1001/WebBanHang
     branch: main
     dockerfilePath: ./Dockerfile
-    buildCommand: ""
-    startCommand: ""
+
     buildCommand: |
-      composer install --no-dev
+      composer install --no-dev --prefer-dist --optimize-autoloader
+      php artisan config:clear
       php artisan key:generate
-      php artisan config:cache
+      php artisan migrate --force
+
     startCommand: php artisan serve --host 0.0.0.0 --port $PORT
+
     envVars:
       - key: APP_ENV
         value: production
@@ -20,3 +22,7 @@ services:
         value: false
       - key: APP_KEY
         generateValue: true
+      - key: DB_CONNECTION
+        value: sqlite
+      - key: DB_DATABASE
+        value: /var/www/html/database/database.sqlite
